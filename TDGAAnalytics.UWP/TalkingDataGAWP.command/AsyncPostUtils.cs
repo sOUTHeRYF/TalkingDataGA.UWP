@@ -35,7 +35,7 @@ namespace TalkingDataGAWP.command
 			HttpWebRequest httpWebRequest = (HttpWebRequest)ar.get_AsyncState();
 			BinaryWriter expr_22 = new BinaryWriter(httpWebRequest.EndGetRequestStream(ar));
 			expr_22.Write(this._requestData);
-			expr_22.Close();
+			expr_22.Dispose();
 			Debugger.Log("Call BeginGetResponse.");
 			httpWebRequest.BeginGetResponse(new AsyncCallback(this.ResponseCallbackEvent), httpWebRequest);
 		}
@@ -59,11 +59,11 @@ namespace TalkingDataGAWP.command
 			}
 			catch (WebException ex)
 			{
-				Debugger.Log("Post Failed. Exception:" + ex.get_StackTrace());
+				Debugger.Log("Post Failed. Exception:" + ex.StackTrace);
 			}
 			catch (Exception ex2)
 			{
-				Debugger.Log("Post Failed. Exception:" + ex2.get_StackTrace());
+				Debugger.Log("Post Failed. Exception:" + ex2.StackTrace);
 			}
 			Debugger.Log("Call ResponseCallBack.");
 			this._responseCallBack(httpWebResponse);

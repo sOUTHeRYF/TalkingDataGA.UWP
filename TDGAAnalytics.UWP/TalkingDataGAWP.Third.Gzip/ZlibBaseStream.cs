@@ -132,7 +132,7 @@ namespace TalkingDataGAWP.Third.Gzip
 		{
 			get
 			{
-				return this._stream.get_Length();
+				return this._stream.Length;
 			}
 		}
 
@@ -333,7 +333,7 @@ namespace TalkingDataGAWP.Third.Gzip
 				this.end();
 				if (!this._leaveOpen)
 				{
-					this._stream.Close();
+					this._stream.Dispose();
 				}
 				this._stream = null;
 			}

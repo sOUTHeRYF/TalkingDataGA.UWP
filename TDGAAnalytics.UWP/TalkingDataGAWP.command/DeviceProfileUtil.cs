@@ -1,9 +1,10 @@
-using Microsoft.Phone.Info;
-using Microsoft.Phone.Net.NetworkInformation;
+//using Microsoft.Phone.Info;
+//using Microsoft.Phone.Net.NetworkInformation;
 using System;
 using System.Globalization;
 using System.Net.NetworkInformation;
 
+using Windows.Networking.Connectivity;
 namespace TalkingDataGAWP.command
 {
 	internal class DeviceProfileUtil
@@ -11,38 +12,46 @@ namespace TalkingDataGAWP.command
 		public static string getNetStatus()
 		{
 			string result = "unknown";
-			NetworkInterfaceType networkInterfaceType = NetworkInterface.get_NetworkInterfaceType();
-			if (networkInterfaceType <= 71)
-			{
-				if (networkInterfaceType != null)
-				{
-					if (networkInterfaceType == 71)
-					{
-						result = "wifi";
-					}
-				}
-				else
-				{
-					result = "offline";
-				}
-			}
-			else if (networkInterfaceType != 145)
-			{
-				if (networkInterfaceType == 146)
-				{
-					result = "3G";
-				}
-			}
-			else
-			{
-				result = "2G";
-			}
+            ConnectionProfile internetConnectionProfile = NetworkInformation.GetInternetConnectionProfile();
+            if(internetConnectionProfile != null)
+            {
+                uint ianaInterfaceType = internetConnectionProfile.NetworkAdapter.IanaInterfaceType;
+                if (ianaInterfaceType <= 71u)
+                {
+                    if (ianaInterfaceType != 6u)
+                    {
+                        if (ianaInterfaceType == 71u)
+                        {
+                            result = "wifi";
+                        }
+                    }
+                    else
+                    {
+                        result = "offline";
+                    }
+                }
+                else if (ianaInterfaceType != 216u)
+                {
+                    switch (ianaInterfaceType)
+                    {
+                        case 243u:
+                        case 244u:
+                            result = "3G";
+                            break;
+                    }
+                }
+                else
+                {
+                    result = "2G";
+                }
+            }
 			return result;
 		}
 
 		public static string getFirewareVersion()
 		{
 			string result = string.Empty;
+            /*
 			if (SDKTYPE.isSDKFor_WP8())
 			{
 				result = DeviceStatus.get_DeviceFirmwareVersion();
@@ -50,7 +59,7 @@ namespace TalkingDataGAWP.command
 			else
 			{
 				result = DeviceExtendedProperties.GetValue("DeviceFirmwareVersion").ToString();
-			}
+			}*/
 			return result;
 		}
 
@@ -63,7 +72,7 @@ namespace TalkingDataGAWP.command
 			};
 			try
 			{
-				string[] array2 = CultureInfo.get_CurrentCulture().ToString().Split(new char[]
+				string[] array2 = CultureInfo.CurrentCulture.ToString().Split(new char[]
 				{
 					'-'
 				});
@@ -75,7 +84,7 @@ namespace TalkingDataGAWP.command
 			}
 			catch (Exception ex)
 			{
-				Debugger.Log("Fail to read culture :" + ex.get_Message());
+				Debugger.Log("Fail to read culture :" + ex.Message);
 			}
 			return array;
 		}
@@ -86,14 +95,14 @@ namespace TalkingDataGAWP.command
 			try
 			{
 				int num = 0;
-				int.TryParse(TimeZoneInfo.get_Local().get_DisplayName().Split(new char[]
+				int.TryParse(TimeZoneInfo.Local.DisplayName.Split(new char[]
 				{
 					' '
 				})[0].Split(new char[]
 				{
 					':'
-				})[0].Substring(3), ref num);
-				if (TimeZoneInfo.get_Local().IsDaylightSavingTime(DateTime.get_Now()))
+				})[0].Substring(3), out num);
+				if (TimeZoneInfo.Local.IsDaylightSavingTime(DateTime.Now))
 				{
 					num++;
 				}
@@ -101,7 +110,7 @@ namespace TalkingDataGAWP.command
 			}
 			catch (Exception ex)
 			{
-				Debugger.Log("Fail to read timezone (default 8) :" + ex.get_Message());
+				Debugger.Log("Fail to read timezone (default 8) :" + ex.Message);
 				result = 8;
 			}
 			return result;
@@ -119,6 +128,7 @@ namespace TalkingDataGAWP.command
 		public static string getANID()
 		{
 			string text = string.Empty;
+            /*
 			object obj;
 			if (UserExtendedProperties.TryGetValue("ANID", ref obj))
 			{
@@ -127,12 +137,12 @@ namespace TalkingDataGAWP.command
 			object obj2;
 			if (UserExtendedProperties.TryGetValue("ANID2", ref obj2))
 			{
-				if (text.Trim().get_Length() > 0)
+				if (text.Trim().Length > 0)
 				{
 					text += "+";
 				}
 				text += obj2;
-			}
+			}*/
 			return text;
 		}
 	}

@@ -10,14 +10,14 @@ namespace TalkingDataGAWP.command
 	internal class IsolatedStorageUtils
 	{
 		[CompilerGenerated]
-		[Serializable]
-		private sealed class <>c
-		{
-			public static readonly IsolatedStorageUtils.<>c <>9 = new IsolatedStorageUtils.<>c();
+	//	[Serializable]
+		private sealed class IsolatedStorageUtilsInnerClass
+        {
+			public static readonly IsolatedStorageUtils.IsolatedStorageUtilsInnerClass Instance = new IsolatedStorageUtils.IsolatedStorageUtilsInnerClass();
 
-			public static Func<string, string> <>9__4_1;
+			public static Func<string, string> FuncA;
 
-			internal string <GetAllFileNames>b__4_1(string x)
+			internal string GetAllFileNames(string x)
 			{
 				return x;
 			}
@@ -62,9 +62,9 @@ namespace TalkingDataGAWP.command
 			}
 			IEnumerable<string> arg_AB_0 = enumerable;
 			Func<string, string> arg_AB_1;
-			if ((arg_AB_1 = IsolatedStorageUtils.<>c.<>9__4_1) == null)
+			if ((arg_AB_1 = IsolatedStorageUtils.IsolatedStorageUtilsInnerClass.FuncA) == null)
 			{
-				arg_AB_1 = (IsolatedStorageUtils.<>c.<>9__4_1 = new Func<string, string>(IsolatedStorageUtils.<>c.<>9.<GetAllFileNames>b__4_1));
+				arg_AB_1 = (IsolatedStorageUtils.IsolatedStorageUtilsInnerClass.FuncA = new Func<string, string>(IsolatedStorageUtils.IsolatedStorageUtilsInnerClass.Instance.GetAllFileNames));
 			}
 			string[] array = Enumerable.ToArray<string>(Enumerable.OrderBy<string, string>(arg_AB_0, arg_AB_1));
 			Debugger.Log(string.Concat(new object[]
@@ -98,7 +98,7 @@ namespace TalkingDataGAWP.command
 				}
 				else
 				{
-					using (IsolatedStorageFileStream isolatedStorageFileStream = new IsolatedStorageFileStream(fileName, 3, IsolatedStorageFile.GetUserStoreForApplication()))
+					using (IsolatedStorageFileStream isolatedStorageFileStream = new IsolatedStorageFileStream(fileName, FileMode.Open, IsolatedStorageFile.GetUserStoreForApplication()))
 					{
 						result = IsolatedStorageUtils.GetObject<T>(isolatedStorageFileStream);
 					}
@@ -148,7 +148,7 @@ namespace TalkingDataGAWP.command
 				}
 				else
 				{
-					using (IsolatedStorageFileStream isolatedStorageFileStream = new IsolatedStorageFileStream(fileName, 3, IsolatedStorageFile.GetUserStoreForApplication()))
+					using (IsolatedStorageFileStream isolatedStorageFileStream = new IsolatedStorageFileStream(fileName, FileMode.Open, IsolatedStorageFile.GetUserStoreForApplication()))
 					{
 						if (isolatedStorageFileStream == null)
 						{
@@ -158,7 +158,7 @@ namespace TalkingDataGAWP.command
 						{
 							using (BinaryReader binaryReader = new BinaryReader(isolatedStorageFileStream))
 							{
-								result = binaryReader.ReadBytes((int)isolatedStorageFileStream.get_Length());
+								result = binaryReader.ReadBytes((int)isolatedStorageFileStream.Length);
 							}
 						}
 					}
@@ -177,7 +177,7 @@ namespace TalkingDataGAWP.command
 			}
 			try
 			{
-				byte[] array = new byte[stream.get_Length()];
+				byte[] array = new byte[stream.Length];
 				int num = 0;
 				int i = array.Length;
 				while (i > 0)
@@ -194,7 +194,7 @@ namespace TalkingDataGAWP.command
 			}
 			catch (Exception ex)
 			{
-				Debugger.Log(Debugger.LogLevel.Error, "Failed to deserialize object. Mask exception and proceed. " + ex.get_StackTrace());
+				Debugger.Log(Debugger.LogLevel.Error, "Failed to deserialize object. Mask exception and proceed. " + ex.StackTrace);
 				result = default(T);
 			}
 			return result;
@@ -225,7 +225,7 @@ namespace TalkingDataGAWP.command
 				}
 				else
 				{
-					using (IsolatedStorageFileStream isolatedStorageFileStream = new IsolatedStorageFileStream(fileName, 2, IsolatedStorageFile.GetUserStoreForApplication()))
+					using (IsolatedStorageFileStream isolatedStorageFileStream = new IsolatedStorageFileStream(fileName, FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication()))
 					{
 						try
 						{
@@ -236,10 +236,10 @@ namespace TalkingDataGAWP.command
 						}
 						catch (Exception ex)
 						{
-							Debugger.Log(Debugger.LogLevel.Error, "Failed to save object. Mask exception and proceed. " + ex.get_StackTrace());
+							Debugger.Log(Debugger.LogLevel.Error, "Failed to save object. Mask exception and proceed. " + ex.StackTrace);
 							if (isolatedStorageFileStream != null)
 							{
-								isolatedStorageFileStream.Close();
+								isolatedStorageFileStream.Dispose();
 							}
 						}
 					}

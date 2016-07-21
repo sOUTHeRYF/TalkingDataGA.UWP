@@ -6,7 +6,7 @@ namespace TalkingDataGAWP.command
 	{
 		public static long getCurrentTime()
 		{
-			return (long)(DateTime.get_Now() - DateTime.Parse("1970-1-1")).get_TotalMilliseconds();
+			return (long)(DateTime.Now - DateTime.Parse("1970-1-1")).get_TotalMilliseconds();
 		}
 	}
 }

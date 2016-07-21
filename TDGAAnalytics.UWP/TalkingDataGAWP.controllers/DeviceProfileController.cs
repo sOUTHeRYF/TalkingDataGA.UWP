@@ -1,47 +1,55 @@
 using Microsoft.Phone.Info;
 using Microsoft.Phone.Net.NetworkInformation;
 using System;
-using System.Device.Location;
+//using System.Device.Location;
 using System.Text;
 using System.Windows;
 using TalkingDataGAWP.command;
 using TalkingDataGAWP.Entity;
 
+using Windows.Networking.Connectivity;
 namespace TalkingDataGAWP.controllers
 {
 	internal class DeviceProfileController
 	{
 		public static string getNetStatus()
 		{
-			string result = "unknown";
-			NetworkInterfaceType networkInterfaceType = NetworkInterface.get_NetworkInterfaceType();
-			if (networkInterfaceType <= 71)
-			{
-				if (networkInterfaceType != null)
-				{
-					if (networkInterfaceType == 71)
-					{
-						result = "wifi";
-					}
-				}
-				else
-				{
-					result = "offline";
-				}
-			}
-			else if (networkInterfaceType != 145)
-			{
-				if (networkInterfaceType == 146)
-				{
-					result = "3G";
-				}
-			}
-			else
-			{
-				result = "2G";
-			}
-			return result;
-		}
+            string result = "unknown";
+            ConnectionProfile internetConnectionProfile = NetworkInformation.GetInternetConnectionProfile();
+            if (internetConnectionProfile != null)
+            {
+                uint ianaInterfaceType = internetConnectionProfile.NetworkAdapter.IanaInterfaceType;
+                if (ianaInterfaceType <= 71u)
+                {
+                    if (ianaInterfaceType != 6u)
+                    {
+                        if (ianaInterfaceType == 71u)
+                        {
+                            result = "wifi";
+                        }
+                    }
+                    else
+                    {
+                        result = "offline";
+                    }
+                }
+                else if (ianaInterfaceType != 216u)
+                {
+                    switch (ianaInterfaceType)
+                    {
+                        case 243u:
+                        case 244u:
+                            result = "3G";
+                            break;
+                    }
+                }
+                else
+                {
+                    result = "2G";
+                }
+            }
+            return result;
+        }
 
 		public static void getLocation(out double lat, out double lng)
 		{
@@ -68,7 +76,7 @@ namespace TalkingDataGAWP.controllers
 			{
 				lat = 0.0;
 				lng = 0.0;
-				Debugger.Log(arg_6E_0.get_Message());
+				Debugger.Log(arg_6E_0.Message);
 				Debugger.Log("maybe missing permission ID_CAP_LOCATION");
 			}
 		}
@@ -76,7 +84,7 @@ namespace TalkingDataGAWP.controllers
 		public static string getDeviceID()
 		{
 			string text = TDGAPreference.getDeviceID();
-			if (text != null && text.get_Length() > 10)
+			if (text != null && text.Length > 10)
 			{
 				return text;
 			}
@@ -90,14 +98,14 @@ namespace TalkingDataGAWP.controllers
 			}
 			catch (Exception arg_36_0)
 			{
-				Debugger.Log(arg_36_0.get_Message());
+				Debugger.Log(arg_36_0.Message);
 				Debugger.Log("maybe missing permission ID_CAP_IDENTITY_DEVICE");
 			}
-			string text2 = DateTime.get_UtcNow().get_Millisecond() + DateTime.get_Now().get_Ticks().ToString();
-			while (text.get_Length() < 32)
+			string text2 = DateTime.get_UtcNow().get_Millisecond() + DateTime.Now.get_Ticks().ToString();
+			while (text.Length < 32)
 			{
 				Random random = new Random();
-				text = text2 + random.Next(0, 32 - text2.get_Length() + 1);
+				text = text2 + random.Next(0, 32 - text2.Length + 1);
 			}
 			TDGAPreference.setDeviceID(text);
 			return text;
@@ -110,8 +118,8 @@ namespace TalkingDataGAWP.controllers
 
 		public static void getPixelMetric(VODeviceProfile device)
 		{
-			Deployment.get_Current().get_Dispatcher().BeginInvoke(delegate
-			{
+		//	Deployment.get_Current().get_Dispatcher().BeginInvoke(delegate
+		//	{
 				try
 				{
 					StringBuilder stringBuilder = new StringBuilder();
@@ -122,12 +130,12 @@ namespace TalkingDataGAWP.controllers
 				}
 				catch (Exception ex)
 				{
-					Debugger.Log("Fail to read resolution :" + ex.get_Message());
+					Debugger.Log("Fail to read resolution :" + ex.Message);
 				}
 				finally
 				{
 				}
-			});
+	//		});
 		}
 	}
 }

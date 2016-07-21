@@ -16,7 +16,7 @@ namespace TalkingDataGAWP.command
 			}
 			catch (Exception ex)
 			{
-				Debugger.Log("GetPackageName: " + ex.get_Message());
+				Debugger.Log("GetPackageName: " + ex.Message);
 				result = "Un_known";
 			}
 			return result;
@@ -45,7 +45,7 @@ namespace TalkingDataGAWP.command
 			}
 			catch (Exception ex)
 			{
-				Debugger.Log("Fail to read App version from WMAppManifest : " + ex.get_Message());
+				Debugger.Log("Fail to read App version from WMAppManifest : " + ex.Message);
 			}
 			return null;
 		}
@@ -74,7 +74,7 @@ namespace TalkingDataGAWP.command
 			}
 			catch (Exception ex)
 			{
-				Debugger.Log("sdkVersion: " + ex.get_Message());
+				Debugger.Log("sdkVersion: " + ex.Message);
 				result = "-1.0.0";
 			}
 			return result;

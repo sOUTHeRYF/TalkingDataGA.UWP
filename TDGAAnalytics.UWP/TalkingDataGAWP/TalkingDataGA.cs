@@ -122,7 +122,7 @@ namespace TalkingDataGAWP
 
 		private static bool isAppkValided(string appkey)
 		{
-			return !string.IsNullOrWhiteSpace(appkey) && appkey.get_Length() == 32;
+			return !string.IsNullOrWhiteSpace(appkey) && appkey.Length == 32;
 		}
 
 		private static void startSession()

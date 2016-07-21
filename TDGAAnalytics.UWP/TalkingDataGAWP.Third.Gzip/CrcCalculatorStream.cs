@@ -73,7 +73,7 @@ namespace TalkingDataGAWP.Third.Gzip
 			{
 				if (this._lengthLimit == CrcCalculatorStream.UnsetLengthLimit)
 				{
-					return this._innerStream.get_Length();
+					return this._innerStream.Length;
 				}
 				return this._lengthLimit;
 			}
@@ -180,15 +180,15 @@ namespace TalkingDataGAWP.Third.Gzip
 
 		void IDisposable.Dispose()
 		{
-			this.Close();
+			this.Dispose();
 		}
 
 		public override void Close()
 		{
-			base.Close();
+			base.Dispose();
 			if (!this._leaveOpen)
 			{
-				this._innerStream.Close();
+				this._innerStream.Dispose();
 			}
 		}
 	}

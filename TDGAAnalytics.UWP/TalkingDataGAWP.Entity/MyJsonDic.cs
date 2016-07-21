@@ -38,7 +38,7 @@ namespace TalkingDataGAWP.Entity
 					}
 				}
 				StringBuilder expr_B3 = stringBuilder;
-				expr_B3.Remove(expr_B3.get_Length() - 1, 1).Append("}");
+				expr_B3.Remove(expr_B3.Length - 1, 1).Append("}");
 				return stringBuilder.ToString();
 			}
 			return "{}";

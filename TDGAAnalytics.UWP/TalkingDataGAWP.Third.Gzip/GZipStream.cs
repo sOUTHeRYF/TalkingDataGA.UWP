@@ -223,7 +223,7 @@ namespace TalkingDataGAWP.Third.Gzip
 				{
 					if (disposing && this._baseStream != null)
 					{
-						this._baseStream.Close();
+						this._baseStream.Dispose();
 						this._Crc32 = this._baseStream.Crc32;
 					}
 					this._disposed = true;
@@ -310,7 +310,7 @@ namespace TalkingDataGAWP.Third.Gzip
 			array3[num3++] = b;
 			if (!this.LastModified.get_HasValue())
 			{
-				this.LastModified = new DateTime?(DateTime.get_Now());
+				this.LastModified = new DateTime?(DateTime.Now);
 			}
 			Array.Copy(BitConverter.GetBytes((int)(this.LastModified.get_Value() - GZipStream._unixEpoch).get_TotalSeconds()), 0, array3, num3, 4);
 			num3 += 4;
